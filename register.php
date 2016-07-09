@@ -24,17 +24,6 @@
         $smarty->display("templates/fail.tpl");
         exit();
     }
-
-    $stmt = $db->prepare("INSERT INTO USER(UNAME,F_NAME,L_NAME,EMAIL,PASSWORDHASH) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssss", $username, $f_name, $l_name,$email,$password);
-    if(!$stmt->execute()){
-        $messages[] = "Your username already exists in the db";
-        $smarty->assign("messages",$messages);
-        $smarty->display("templates/fail.tpl");
-        exit();
-    }
-    else{
-        header("Location:index.php");
-    }
-    $stmt->close();
+    $db=new database();
+    $db->create_user($username, $f_name, $l_name,$email,$password);
 ?>
