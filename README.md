@@ -4,3 +4,7 @@ Right now it's in development but core functionality is complete
 - [x] Added authentification and authorization to pages
 - [x] Added blog creation and deletion 
 - [x] Created Database class for ease of manipulation
+Instalation:
+    - Copy to your www directory
+    - run ./config
+    - Mysql config is in connect.php

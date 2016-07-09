@@ -1,11 +1,20 @@
 <html>
-    <head></head>
+    <head>
+        
+    <link rel="stylesheet" href="css/reset.css"/>
+    <link rel="stylesheet" href="css/index.css"/>
+    </head>
     <body>
         <h1>
-            Blog nr 1;
+            
         </h1>
         {foreach from=$posts item=post}
-            <li>$post["title"]}, by </a></li>
+             <div class="card">
+                
+                <h1 class="blog_title">{$post["title"]}</h1>
+                <h4 class="blog_date">Date Created: {$post["date"]}</h1>
+                <h4 class="author">{$post["content"]}</h1>
+              </div>
             {/foreach}
     </body>
 </html>

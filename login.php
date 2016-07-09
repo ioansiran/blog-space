@@ -23,8 +23,14 @@
         $_SESSION["BLOG_U"]=$username;
         $_SESSION["BLOG_TOKEN"]=hash('sha256',$secret.$username.$password);
         header("Location:index.php");
-    }else 
-        header("Location:user.php");
+    }else{
+        
+        $messages[]="Wrong username or password";
+        $smarty->assign("messages",$messages);
+        $smarty->display("templates/fail.tpl");
+        exit();
+    } 
+        
     
    
 ?>

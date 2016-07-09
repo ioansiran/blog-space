@@ -13,7 +13,7 @@
 
         {foreach from=$blogs item=blog}
             <div class="card">
-                <h1>{$blog["title"]}</h1>
+                <h1><a href="view.php?id={$blog["id"]}">{$blog["title"]}</a></h1>
                 <button onclick="delete_blog({$blog["id"]})" value="delete blog">delete blog</button>
             </div>
             {/foreach}

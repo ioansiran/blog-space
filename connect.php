@@ -85,10 +85,31 @@ class database{
     function get_user_blogs(){
         return $this->db->prepare("Select BLOG_ID,TITLE,UNAME from BLOG join USER on OWNER_ID=USER_ID where UNAME=?;");
     }
-    function get_all_blog_posts(){
-        return $this->db->prepare("Select TITLE,CONTENT,DATE_CREATED,LIKES,DISLIKES from BLOG_POST WHERE BLOG_ID=?");
+    function get_post_by_blog_id($id){
+        $stmt=$this->db->prepare("Select TITLE,CONTENT,DATE_CREATED,LIKES,DISLIKES from BLOG_POST  where BLOG_ID=?;");
+        $stmt->bind_param("i", $id);
         
-    }
+            /* execute query */
+            $stmt->execute();
+        
+            /* bind result variables */
+            $stmt->bind_result($TITLE,$CONTENT,$DATE_CREATED,$LIKES,$DISLIKES);
+            $posts= array();
+            $id=0;
+            while ($stmt->fetch()) {
+                $posts[$id]["title"]=$TITLE;
+                $posts[$id]["content"]=$CONTENT;
+                $posts[$id]["date"]=$DATE_CREATED;
+                
+                $posts[$id]["likes"]=$LIKES;
+                $posts[$id]["dislikes"]=$DISLIKES;
+                $id++;
+            }
+            /* close statement */
+            $stmt->close();
+            return $posts;
+        }
+    
     function delete_blog_secure($uname,$blog_id){
         
         $update= $this->db->prepare("DELETE BLOG FROM BLOG JOIN USER ON OWNER_ID=USER_ID WHERE UNAME=? AND BLOG_ID=?");
