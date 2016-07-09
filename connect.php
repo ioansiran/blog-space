@@ -23,18 +23,18 @@ class database{
     }
     function validate_token($uname,$token){
 
-        require("secret.php");
         
         if($stmt = $this->db->prepare("SELECT PASSWORDHASH FROM USER WHERE UNAME=? ;")) 
         {
-            $name=strip_tags($uname);
-            $stmt -> bind_param("s", $name);
+            require("secret.php");
+            $uname=strip_tags($uname);
+            $stmt -> bind_param("s", $uname);
             $stmt -> execute();
         
             /* Bind results */
             $stmt -> bind_result($PWDHS);
             $stmt->fetch();
-            if(hash('sha256',$secret.$name.$PWDHS)==$token)
+            if(hash('sha256',$secret.$uname.$PWDHS)==$token)
                 return TRUE;
             else{
                 return FALSE;
@@ -88,6 +88,48 @@ class database{
     function get_all_blog_posts(){
         return $this->db->prepare("Select TITLE,CONTENT,DATE_CREATED,LIKES,DISLIKES from BLOG_POST WHERE BLOG_ID=?");
         
+    }
+    function delete_blog_secure($uname,$blog_id){
+        
+        $update= $this->db->prepare("DELETE BLOG FROM BLOG JOIN USER ON OWNER_ID=USER_ID WHERE UNAME=? AND BLOG_ID=?");
+        if(!$update) return false;
+        $update->bind_param('si', $uname, $blog_id);
+      $update->execute();
+      
+      return $update;
+        
+    }
+    function get_user_id($uname){
+       if ($stmt = $this->db->prepare("SELECT USER_ID FROM USER WHERE UNAME=?")) {
+
+            /* bind parameters for markers */
+            $stmt->bind_param("s", $uname);
+        
+            /* execute query */
+            $stmt->execute();
+        
+            /* bind result variables */
+            $stmt->bind_result($ID);
+        
+            /* fetch value */
+            $stmt->fetch();
+        
+            /* close statement */
+            $stmt->close();
+            return $ID;
+       }
+    }
+    function create_blog($B_NAME,$U_ID) {
+        $stmt = $this->db->prepare("INSERT INTO BLOG (OWNER_ID, TITLE) VALUES (?, ?)");
+        if(!$stmt)
+            return false;
+        if(!$stmt->bind_param("ss", $U_ID, $B_NAME))
+            return false;
+        if(!$stmt->execute())
+            return false;
+        $stmt->close();
+        return true;
+
     }
 }
 ?>

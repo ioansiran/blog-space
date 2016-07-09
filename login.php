@@ -17,6 +17,14 @@
         $smarty->display("templates/fail.tpl");
         exit();
     }
+    $db = new database();
+    if($db->validate_credentials($username,$password)){
+        session_start();
+        $_SESSION["BLOG_U"]=$username;
+        $_SESSION["BLOG_TOKEN"]=hash('sha256',$secret.$username.$password);
+        header("Location:index.php");
+    }else 
+        header("Location:user.php");
     
    
 ?>

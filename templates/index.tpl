@@ -8,8 +8,13 @@
   </head>
   <body>
       <div id="top_bar">
+         {if isset($username)}
         <h1>Hello, {$username}!</h1>
         <a href="dashboard.php">Dashboard</a>
+        <a href="logout.php">Log out</a>
+        {else}
+        <a href="user.php">Login or Register</a>
+        {/if}
         </div>
     
       {foreach from=$blogs item=blog}
