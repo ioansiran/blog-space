@@ -3,8 +3,9 @@ require("smart.php");
 require("connect.php");
 
 $blogs=array();
+$database= new database();
 
-$result = $db->query("Select TITLE,F_NAME,L_NAME,UNAME,DATE_CREATED from BLOG JOIN USER ON OWNER_ID=USER_ID;");
+$result = $database->get_all_blogs();
 while($row = $result->fetch_assoc()) {
       $blogs[]=$row;
 }

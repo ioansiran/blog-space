@@ -9,7 +9,7 @@
   <body>
       <div id="top_bar">
         <h1>Hello, {$username}!</h1>
-        <a href="write.php">Write new blog post</a>
+        <a href="dashboard.php">Dashboard</a>
         </div>
     
       {foreach from=$blogs item=blog}

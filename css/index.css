@@ -17,3 +17,10 @@ html,body{
     height: 20px;
     background-color: rgba(100,100,100,0.5);
 }
+#top_bar>a{
+    float:right;
+    
+}
+#top_bar>h1{
+    float: left;    
+}
