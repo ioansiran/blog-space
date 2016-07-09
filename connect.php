@@ -79,7 +79,7 @@ class database{
        return false;
     }
     function get_all_blogs(){
-        return $this->db->query("Select TITLE,F_NAME,L_NAME,UNAME,DATE_CREATED from BLOG JOIN USER ON OWNER_ID=USER_ID;");
+        return $this->db->query("Select BLOG_ID,TITLE,F_NAME,L_NAME,UNAME,DATE_CREATED from BLOG JOIN USER ON OWNER_ID=USER_ID;");
         
     }
     function get_user_blogs(){
@@ -151,6 +151,37 @@ class database{
         $stmt->close();
         return true;
 
+    }
+    function check_ownership($userId,$blogId){
+        if ($stmt = $this->db->prepare("SELECT OWNER_ID FROM BLOG WHERE BLOG_ID=?")) {
+
+            /* bind parameters for markers */
+            $stmt->bind_param("s", $blogId);
+        
+            /* execute query */
+            $stmt->execute();
+        
+            /* bind result variables */
+            $stmt->bind_result($ID);
+        
+            /* fetch value */
+            $stmt->fetch();
+        
+            /* close statement */
+            $stmt->close();
+            return $ID==$userId;
+       }
+    }
+    function post($blog_id,$post_title,$post_content){
+         $stmt = $this->db->prepare("INSERT INTO BLOG_POST (BLOG_ID, TITLE,CONTENT) VALUES (?, ?, ?)");
+        if(!$stmt)
+            return false;
+        if(!$stmt->bind_param("iss",$blog_id,$post_title,$post_content))
+            return false;
+        if(!$stmt->execute())
+            return false;
+        $stmt->close();
+        return true;
     }
 }
 ?>

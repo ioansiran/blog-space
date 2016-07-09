@@ -1,6 +1,5 @@
 <html>
     <head>
-        
     <link rel="stylesheet" href="css/reset.css"/>
     <link rel="stylesheet" href="css/index.css"/>
     </head>
@@ -8,6 +7,7 @@
         <h1>
             
         </h1>
+        <
         {foreach from=$posts item=post}
              <div class="card">
                 

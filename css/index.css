@@ -20,7 +20,7 @@ html,body{
 }
 #top_bar>a{
     float:right;
-    
+    margin-right:10px;
 }
 #top_bar>h1{
     float: left;    

@@ -20,7 +20,7 @@
       {foreach from=$blogs item=blog}
       <div class="card">
         
-        <h1 class="blog_title">{$blog["TITLE"]}</h1>
+        <h1 class="blog_title"><a href="view.php?id={$blog["BLOG_ID"]}">{$blog["TITLE"]}</a></h1>
         <h4 class="blog_date">Date Created: {$blog["DATE_CREATED"]}</h1>
         <h4 class="author">Author:{$blog["F_NAME"]} {$blog["L_NAME"]}</h1>
       </div>
