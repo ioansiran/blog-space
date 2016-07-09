@@ -86,17 +86,19 @@ class database{
         return $this->db->prepare("Select BLOG_ID,TITLE,UNAME from BLOG join USER on OWNER_ID=USER_ID where UNAME=?;");
     }
     function get_post_by_blog_id($id){
-        $stmt=$this->db->prepare("Select TITLE,CONTENT,DATE_CREATED,LIKES,DISLIKES from BLOG_POST  where BLOG_ID=?;");
+        $stmt=$this->db->prepare("Select POST_ID,TITLE,CONTENT,DATE_CREATED,LIKES,DISLIKES from BLOG_POST  where BLOG_ID=?;");
         $stmt->bind_param("i", $id);
         
             /* execute query */
             $stmt->execute();
         
             /* bind result variables */
-            $stmt->bind_result($TITLE,$CONTENT,$DATE_CREATED,$LIKES,$DISLIKES);
+            $stmt->bind_result($POST_ID,$TITLE,$CONTENT,$DATE_CREATED,$LIKES,$DISLIKES);
             $posts= array();
             $id=0;
             while ($stmt->fetch()) {
+                
+                $posts[$id]["id"]=$POST_ID;
                 $posts[$id]["title"]=$TITLE;
                 $posts[$id]["content"]=$CONTENT;
                 $posts[$id]["date"]=$DATE_CREATED;
@@ -177,6 +179,17 @@ class database{
         if(!$stmt)
             return false;
         if(!$stmt->bind_param("iss",$blog_id,$post_title,$post_content))
+            return false;
+        if(!$stmt->execute())
+            return false;
+        $stmt->close();
+        return true;
+    }
+    function edit_post($user_id,$post_id,$title,$content){
+        $stmt = $this->db->prepare("update BLOG_POST join BLOG on BLOG_POST.BLOG_ID=BLOG.BLOG_ID set content=?  where POST_ID=? AND OWNER_ID=?;;");
+         if(!$stmt)
+            return false;
+        if(!$stmt->bind_param("sii",$post_content,$blog_id,$post_id))
             return false;
         if(!$stmt->execute())
             return false;
